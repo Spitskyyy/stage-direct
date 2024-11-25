@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Stage direct | Liste des utilisateurs
+{% endblock %}
+
+{% block body %}
+	<br><br><br>
+
+	<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+		<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+			<caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+				Liste des utilisateurs
+				<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400"></p>
+			</caption>
+			<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+				<tr>
+					<th scope="col" class="px-6 py-3">
+						ID
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Firstname
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Lastname
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Email
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Roles
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Password
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Actions
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in users %}
+					<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+						<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+							{{ user.id }}
+						</th>
+						<td class="px-6 py-4">
+							{{ user.firstname }}
+						</td>
+						<td class="px-6 py-4">
+							{{ user.lastname }}
+						</td>
+						<td class="px-6 py-4">
+							{{ user.email }}
+						</td>
+						<td class="px-6 py-4">
+							{{ user.roles ? user.roles|json_encode : '' }}
+						</td>
+						<td class="px-6 py-4">
+							{{ user.password }}
+						</td>
+						<td class="px-6 py-4">
+							<a href="{{ path('app_user_show', {'id': user.id}) }}">Détail,</a>
+							<a href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier,</a>
+							<a href="{{ path('app_user_delete', {'id': user.id}) }}">Del</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="5">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+
+	<br>
+	<a href="{{ path('app_user_new') }}">Create new</a>
+{% endblock %}
