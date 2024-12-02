@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stage direct | Entreprises
+{% endblock %}
+
+{% block body %}
+	<h1>Company index</h1>
+
+	<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+		<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+			<caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+				Liste des entreprises
+				<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400"></p>
+			</caption>
+			<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+				<tr>
+					<th scope="col" class="px-6 py-3">
+						ID
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Nom
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Address
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Ville
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Code Postal
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Pays
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Numéro de telephone
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Email
+					</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{% for company in companies %}
+					<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+						<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+							{{ company.id }}
+						</th>
+						<td class="px-6 py-4">
+							{{ company.name }}
+						</td>
+						<td class="px-6 py-4">
+							{{ company.address }}
+						</td>
+
+						<td class="px-6 py-4">
+							{{ company.city }}</td>
+
+						<td class="px-6 py-4">
+							{{ company.zip }}</td>
+
+						<td class="px-6 py-4">
+							{{ company.country }}</td>
+
+						<td class="px-6 py-4">
+							{{ company.phone }}</td>
+
+						<td class="px-6 py-4">
+							{{ company.email }}</td>
+
+						<td class="px-6 py-4">
+							<a href="{{ path('app_company_show', {'id': company.id}) }}">Détail,</a>
+							<a href="{{ path('app_company_edit', {'id': company.id}) }}">Modifier,</a>
+							<a href="{{ path('app_company_delete', {'id': company.id}) }}">Del</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="5">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+
+		</table>
+	</div>
+
+</table>
+
+<a href="{{ path('app_company_new') }}">Create new</a>{% endblock %}
