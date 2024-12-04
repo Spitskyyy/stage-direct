@@ -16,12 +16,17 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 final class UserController extends AbstractController
 {
     #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
+    public function index(Request $request, UserRepository $userRepository): Response
+{
+    $searchTerm = $request->query->get('search', '');
+
+    $users = $userRepository->findBySearchTerm($searchTerm);
+
+    return $this->render('user/index.html.twig', [
+        'users' => $users,
+        'searchTerm' => $searchTerm,
+    ]);
+}
 
     #[Route('/new_user', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
