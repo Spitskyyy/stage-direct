@@ -19,14 +19,17 @@ final class UserController extends AbstractController
     public function index(Request $request, UserRepository $userRepository): Response
 {
     $searchTerm = $request->query->get('search', '');
+    $sort = $request->query->get('sort', 'id'); // Champ de tri par défaut
+    $direction = $request->query->get('direction', 'asc'); // Direction de tri par défaut
 
-    $users = $userRepository->findBySearchTerm($searchTerm);
+    $users = $userRepository->findBySearchTerm($searchTerm, $sort, $direction);
 
     return $this->render('user/index.html.twig', [
         'users' => $users,
         'searchTerm' => $searchTerm,
     ]);
 }
+
 
     #[Route('/new_user', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response

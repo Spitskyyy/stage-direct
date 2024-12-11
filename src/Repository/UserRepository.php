@@ -33,19 +33,34 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    public function findBySearchTerm(string $searchTerm): array
-{
-    $qb = $this->createQueryBuilder('u');
-
-    if ($searchTerm) {
-        $qb->where('u.firstname LIKE :searchTerm')
-            ->orWhere('u.lastname LIKE :searchTerm')
-            ->orWhere('u.email LIKE :searchTerm')
-            ->setParameter('searchTerm', '%' . $searchTerm . '%');
+    public function findBySearchTerm(string $searchTerm, string $sort = 'id', string $direction = 'asc'): array
+    {
+        $allowedSorts = ['id', 'firstname', 'lastname', 'email'];
+        $allowedDirections = ['asc', 'desc'];
+    
+        // Validation des paramètres pour éviter les abus
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+    
+        if (!in_array($direction, $allowedDirections)) {
+            $direction = 'asc';
+        }
+    
+        $qb = $this->createQueryBuilder('u');
+    
+        if ($searchTerm) {
+            $qb->where('u.firstname LIKE :searchTerm')
+                ->orWhere('u.lastname LIKE :searchTerm')
+                ->orWhere('u.email LIKE :searchTerm')
+                ->setParameter('searchTerm', '%' . $searchTerm . '%');
+        }
+    
+        // Ajout du tri
+        $qb->orderBy('u.' . $sort, $direction);
+    
+        return $qb->getQuery()->getResult();
     }
-
-    return $qb->getQuery()->getResult();
-}
 
     //    /**
     //     * @return User[] Returns an array of User objects

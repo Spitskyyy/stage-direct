@@ -34,18 +34,27 @@
 						</div>
 					</th>
 					<th scope="col" class="px-6 py-3">
-						ID
+						<a href="{{ path('app_user_index', { sort: 'id', direction: app.request.get('direction') == 'asc' ? 'desc' : 'asc' }) }}">
+							ID
+						</a>
 					</th>
 					<th scope="col" class="px-6 py-3">
-						Firstname
+						<a href="{{ path('app_user_index', { sort: 'firstname', direction: app.request.get('direction') == 'asc' ? 'desc' : 'asc' }) }}">
+							Firstname
+						</a>
 					</th>
 					<th scope="col" class="px-6 py-3">
-						Lastname
+						<a href="{{ path('app_user_index', { sort: 'lastname', direction: app.request.get('direction') == 'asc' ? 'desc' : 'asc' }) }}">
+							Lastname
+						</a>
 					</th>
 					<th scope="col" class="px-6 py-3">
-						Email
+						<a href="{{ path('app_user_index', { sort: 'email', direction: app.request.get('direction') == 'asc' ? 'desc' : 'asc' }) }}">
+							Email
+						</a>
 					</th>
 					<th scope="col" class="px-6 py-3">
+						<a href="{{ path('app_user_index', { sort: 'role', direction: app.request.get('direction') == 'asc' ? 'desc' : 'asc' }) }}">
 						Roles
 					</th>
 					<th scope="col" class="px-6 py-3">

@@ -40,12 +40,6 @@
 						Nom
 					</th>
 					<th scope="col" class="px-6 py-3">
-						Date du début
-					</th>
-					<th scope="col" class="px-6 py-3">
-						Date de fin
-					</th>
-					<th scope="col" class="px-6 py-3">
 						address
 					</th>
 					{# <th scope="col" class="px-6 py-3">
@@ -54,6 +48,12 @@
                     <th scope="col" class="px-6 py-3">
 						Téléphone
 					</th> #}
+					<th scope="col" class="px-6 py-3">
+						Date du début
+					</th>
+					<th scope="col" class="px-6 py-3">
+						Date de fin
+					</th>
 					<th scope="col" class="px-6 py-3">
 						Actions
 					</th>
@@ -75,13 +75,13 @@
 							{{ stage.name }}
 						</td>
 						<td class="px-6 py-4">
+							{{ stage.address}}
+						</td>
+						<td class="px-6 py-4">
 							{{ stage.start_date }}
 						</td>
 						<td class="px-6 py-4">
 							{{ stage.end_date }}
-						</td>
-						<td class="px-6 py-4">
-							{{ stage.address}}
 						</td>
 						<td class="px-6 py-4">
 								<a href="{{ path('app_stage_show', {'id': stage.id}) }}">Détail,</a>
