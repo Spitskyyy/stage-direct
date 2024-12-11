@@ -15,10 +15,16 @@ use Symfony\Component\Routing\Attribute\Route;
 final class StageController extends AbstractController
 {
     #[Route(name: 'app_stage_index', methods: ['GET'])]
-    public function index(StageRepository $stageRepository): Response
+    public function index(Request $request, StageRepository $stageRepository): Response
     {
+
+        $searchTerm = $request->query->get('search', '');
+
+        $stages = $stageRepository->findBySearchTerm($searchTerm);
+
         return $this->render('stage/index.html.twig', [
-            'stages' => $stageRepository->findAll(),
+            'stage' => $stages,
+            'searchTerm' => $searchTerm,
         ]);
     }
 

@@ -15,6 +15,19 @@ class CompanyRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Company::class);
     }
+    public function findBySearchTerm(string $searchTerm): array
+    {
+        $qb = $this->createQueryBuilder('u');
+    
+        if ($searchTerm) {
+            $qb->where('u.firstname LIKE :searchTerm')
+                ->orWhere('u.lastname LIKE :searchTerm')
+                ->orWhere('u.email LIKE :searchTerm')
+                ->setParameter('searchTerm', '%' . $searchTerm . '%');
+        }
+    
+        return $qb->getQuery()->getResult();
+    }
 
     //    /**
     //     * @return Company[] Returns an array of Company objects

@@ -15,10 +15,16 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CompanyController extends AbstractController
 {
     #[Route(name: 'app_company_index', methods: ['GET'])]
-    public function index(CompanyRepository $companyRepository): Response
+    public function index(Request $request, CompanyRepository $companyRepository): Response
     {
+
+        $searchTerm = $request->query->get('search', '');
+
+        $companies = $companyRepository->findBySearchTerm($searchTerm);
+
         return $this->render('company/index.html.twig', [
-            'companies' => $companyRepository->findAll(),
+            'company' => $companies,
+            'searchTerm' => $searchTerm,
         ]);
     }
 

@@ -16,6 +16,20 @@ class StageRepository extends ServiceEntityRepository
         parent::__construct($registry, Stage::class);
     }
 
+    public function findBySearchTerm(string $searchTerm): array
+    {
+        $qb = $this->createQueryBuilder('u');
+    
+        if ($searchTerm) {
+            $qb->where('u.firstname LIKE :searchTerm')
+                ->orWhere('u.lastname LIKE :searchTerm')
+                ->orWhere('u.email LIKE :searchTerm')
+                ->setParameter('searchTerm', '%' . $searchTerm . '%');
+        }
+    
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Stage[] Returns an array of Stage objects
     //     */

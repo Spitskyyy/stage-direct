@@ -40,27 +40,27 @@
 						Nom
 					</th>
 					<th scope="col" class="px-6 py-3">
-						Adresse
+						Date du début
 					</th>
 					<th scope="col" class="px-6 py-3">
-						Vile
+						Date de fin
 					</th>
 					<th scope="col" class="px-6 py-3">
-						Code Postal
+						address
 					</th>
-					<th scope="col" class="px-6 py-3">
+					{# <th scope="col" class="px-6 py-3">
 						Email
 					</th>
                     <th scope="col" class="px-6 py-3">
 						Téléphone
-					</th>
+					</th> #}
 					<th scope="col" class="px-6 py-3">
 						Actions
 					</th>
 				</tr>
 			</thead>
 			<tbody>
-				{% for school in schools %}
+				{% for stage in stage %}
 					<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 						<td class="w-4 p-4">
 							<div class="flex items-center">
@@ -69,27 +69,24 @@
 							</div>
 						</td>
 						<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-							{{ school.id }}
+							{{ stage.id }}
 						</th>
 						<td class="px-6 py-4">
-							{{ school.firstname }}
+							{{ stage.name }}
 						</td>
 						<td class="px-6 py-4">
-							{{ school.lastname }}
+							{{ stage.start_date }}
 						</td>
 						<td class="px-6 py-4">
-							{{ school.email }}
+							{{ stage.end_date }}
 						</td>
 						<td class="px-6 py-4">
-							{{ school.roles ? school.roles|json_encode : '' }}
+							{{ stage.address}}
 						</td>
 						<td class="px-6 py-4">
-							{{ school.password }}
-						</td>
-						<td class="px-6 py-4">
-								<a href="{{ path('app_user_show', {'id': user.id}) }}">Détail,</a>
-							<a href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier,</a>
-							<a href="{{ path('app_user_delete', {'id': user.id}) }}">Del</a>
+								<a href="{{ path('app_stage_show', {'id': stage.id}) }}">Détail,</a>
+							<a href="{{ path('app_stage_edit', {'id': stage.id}) }}">Modifier,</a>
+							<a href="{{ path('app_stage_delete', {'id': stage.id}) }}">Del</a>
 						</td>
 					</tr>
 
