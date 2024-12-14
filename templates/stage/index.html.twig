@@ -26,39 +26,58 @@
 		</div>
 		<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
 			<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-				<tr>
-					<th scope="col" class="p-4">
-						<div class="flex items-center">
-							<input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-							<label for="checkbox-all-search" class="sr-only">checkbox</label>
-						</div>
-					</th>
-					<th scope="col" class="px-6 py-3">
-						ID
-					</th>
-					<th scope="col" class="px-6 py-3">
-						Nom
-					</th>
-					<th scope="col" class="px-6 py-3">
-						address
-					</th>
-					{# <th scope="col" class="px-6 py-3">
-						Email
-					</th>
-                    <th scope="col" class="px-6 py-3">
-						Téléphone
-					</th> #}
-					<th scope="col" class="px-6 py-3">
-						Date du début
-					</th>
-					<th scope="col" class="px-6 py-3">
-						Date de fin
-					</th>
-					<th scope="col" class="px-6 py-3">
-						Actions
-					</th>
-				</tr>
-			</thead>
+    <tr>
+        <th scope="col" class="p-4">
+            <div class="flex items-center">
+                <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <label for="checkbox-all-search" class="sr-only">checkbox</label>
+            </div>
+        </th>
+        <th scope="col" class="px-6 py-3">
+            <a href="{{ path('app_stage_index', { sort: 'id', order: sort == 'id' and order == 'asc' ? 'desc' : 'asc' }) }}">
+                ID
+                {% if sort == 'id' %}
+                    <span>{{ order == 'asc' ? '▲' : '▼' }}</span>
+                {% endif %}
+            </a>
+        </th>
+        <th scope="col" class="px-6 py-3">
+            <a href="{{ path('app_stage_index', { sort: 'name', order: sort == 'name' and order == 'asc' ? 'desc' : 'asc' }) }}">
+                Nom
+                {% if sort == 'name' %}
+                    <span>{{ order == 'asc' ? '▲' : '▼' }}</span>
+                {% endif %}
+            </a>
+        </th>
+        <th scope="col" class="px-6 py-3">
+            <a href="{{ path('app_stage_index', { sort: 'address', order: sort == 'address' and order == 'asc' ? 'desc' : 'asc' }) }}">
+                Adresse
+                {% if sort == 'address' %}
+                    <span>{{ order == 'asc' ? '▲' : '▼' }}</span>
+                {% endif %}
+            </a>
+        </th>
+        <th scope="col" class="px-6 py-3">
+            <a href="{{ path('app_stage_index', { sort: 'start_date', order: sort == 'start_date' and order == 'asc' ? 'desc' : 'asc' }) }}">
+                Date du début
+                {% if sort == 'start_date' %}
+                    <span>{{ order == 'asc' ? '▲' : '▼' }}</span>
+                {% endif %}
+            </a>
+        </th>
+        <th scope="col" class="px-6 py-3">
+            <a href="{{ path('app_stage_index', { sort: 'end_date', order: sort == 'end_date' and order == 'asc' ? 'desc' : 'asc' }) }}">
+                Date de fin
+                {% if sort == 'end_date' %}
+                    <span>{{ order == 'asc' ? '▲' : '▼' }}</span>
+                {% endif %}
+            </a>
+        </th>
+        <th scope="col" class="px-6 py-3">
+            Actions
+        </th>
+    </tr>
+</thead>
 			<tbody>
 				{% for stage in stage %}
 					<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">

@@ -19,13 +19,18 @@ final class StageController extends AbstractController
     {
 
         $searchTerm = $request->query->get('search', '');
+    $sort = $request->query->get('sort', 'id'); // Colonne par défaut : id
+    $order = $request->query->get('order', 'asc'); // Ordre par défaut : asc
 
-        $stages = $stageRepository->findBySearchTerm($searchTerm);
+    // Récupération des stages avec tri et recherche
+    $stages = $stageRepository->findBySearchAndSort($searchTerm, $sort, $order);
 
-        return $this->render('stage/index.html.twig', [
-            'stage' => $stages,
-            'searchTerm' => $searchTerm,
-        ]);
+    return $this->render('stage/index.html.twig', [
+        'stage' => $stages,
+        'searchTerm' => $searchTerm,
+        'sort' => $sort,
+        'order' => $order,
+    ]);
     }
 
     #[Route('/new', name: 'app_stage_new', methods: ['GET', 'POST'])]
