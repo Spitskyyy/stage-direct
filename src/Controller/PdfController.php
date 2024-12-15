@@ -2,27 +2,53 @@
 
 namespace App\Controller;
 
-use App\Service\PdfService;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/pdf')]
 class PdfController extends AbstractController
 {
-    #[Route('/export-pdf', name: 'export_pdf', methods: ['POST'])]
-    public function exportPdf(Request $request, PdfService $pdfService)
+    #[Route('/export', name: 'app_pdf_export', methods: ['POST'])]
+    public function export(Request $request): Response
     {
-        // Récupérer le contenu édité envoyé par TinyMCE
-        $content = $request->request->get('content');
+        // Récupérer le contenu TinyMCE
+        $content = $request->request->get('editorContent', '');
 
-        // Ajout d'un template HTML de base pour entourer le contenu
-        $html = $this->renderView('pdf/example.html.twig', [
-            'content' => $content
+        // Configurer Dompdf
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->setIsHtml5ParserEnabled(true);
+
+        $dompdf = new Dompdf($pdfOptions);
+
+        // Charger le contenu HTML dans Dompdf
+        $html = "
+            <html>
+            <head>
+                <meta charset='UTF-8'>
+                <style>
+                    body { font-family: Arial, sans-serif; }
+                </style>
+            </head>
+            <body>
+                $content
+            </body>
+            </html>
+        ";
+        $dompdf->loadHtml($html);
+
+        // Générer le PDF
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        // Renvoyer le PDF en tant que réponse
+        return new Response($dompdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="document.pdf"',
         ]);
-
-        // Diffuser le PDF directement au navigateur
-        $pdfService->streamPdf($html, 'document.pdf');
-
-        return null; // Pas besoin de retourner une réponse, le PDF est diffusé directement
     }
 }

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Stage direct | Liste des utilisateurs
+	Stage direct | Liste des stages
 {% endblock %}
 
 {% block body %}
@@ -119,7 +119,7 @@
 
 <br>
 <a href="{{ path('app_stage_new') }}">Create new</a>
-{# templates/stage/index.html.twig #}
+<br>
 <a href="{{ path('app_stage_export') }}" class="btn btn-primary">
 	Exporter en PDF
 </a>{% endblock %}
