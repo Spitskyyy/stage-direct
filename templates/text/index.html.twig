@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Stage direct | Doc
+{% endblock %}
+
+{% block body %}
+    <textarea id="mytextarea"></textarea>
+    <button id="export-pdf" class="btn btn-primary">
+        Exporter en PDF
+    </button>
+{% endblock %}
+
+{% block javascripts %}
+    {% block importmap %}
+        {{ importmap('app') }}
+    {% endblock %}
+    <script src="js/tinymce/tinymce.min.js"></script>
+    <script>
+        // Initialisation de TinyMCE
+        tinymce.init({
+            selector: '#mytextarea',
+            plugins: 'lists link image table',
+            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            height: 400
+        });
+
+        // Gestion de l'export PDF
+        document.getElementById('export-pdf').addEventListener('click', function () {
+            // Récupérer le contenu TinyMCE
+            const content = tinymce.get('mytextarea').getContent();
+
+            // Envoyer le contenu à Symfony via POST
+            fetch('{{ path('app_stage_export') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    content: content
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.blob(); // Recevoir le PDF
+                } else {
+                    throw new Error('Erreur lors de la génération du PDF');
+                }
+            })
+            .then(blob => {
+                // Télécharger le fichier PDF
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'document.pdf';
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la génération du PDF.');
+            });
+        });
+    </script>
+    <script src="/js/tailwind.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+{% endblock %}

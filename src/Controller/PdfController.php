@@ -1,32 +1,28 @@
 <?php
 
-# src/Controller/PdfController.php
 namespace App\Controller;
 
 use App\Service\PdfService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PdfController extends AbstractController
 {
-    #[Route('/export-pdf', name: 'export_pdf', methods: ['GET'])]
-    public function exportPdf(PdfService $pdfService): Response
+    #[Route('/export-pdf', name: 'export_pdf', methods: ['POST'])]
+    public function exportPdf(Request $request, PdfService $pdfService)
     {
-        // Récupérer les données (par exemple depuis une base de données)
-        $data = [
-            'title' => 'Export PDF',
-            'content' => 'Ceci est un exemple d\'export en PDF avec Symfony et Dompdf.',
-        ];
+        // Récupérer le contenu édité envoyé par TinyMCE
+        $content = $request->request->get('content');
 
-        // Utiliser un fichier Twig pour le contenu HTML
-        $html = $this->renderView('pdf/example.html.twig', ['data' => $data]);
+        // Ajout d'un template HTML de base pour entourer le contenu
+        $html = $this->renderView('pdf/example.html.twig', [
+            'content' => $content
+        ]);
 
-        // Générer le PDF
-        return new Response(
-            $pdfService->generatePdf($html),
-            Response::HTTP_OK,
-            ['Content-Type' => 'application/pdf']
-        );
+        // Diffuser le PDF directement au navigateur
+        $pdfService->streamPdf($html, 'document.pdf');
+
+        return null; // Pas besoin de retourner une réponse, le PDF est diffusé directement
     }
 }
