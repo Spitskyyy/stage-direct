@@ -17,20 +17,19 @@ final class StageController extends AbstractController
     #[Route(name: 'app_stage_index', methods: ['GET'])]
     public function index(Request $request, StageRepository $stageRepository): Response
     {
-
         $searchTerm = $request->query->get('search', '');
-    $sort = $request->query->get('sort', 'id'); // Colonne par défaut : id
-    $order = $request->query->get('order', 'asc'); // Ordre par défaut : asc
+        $sort = $request->query->get('sort', 'id'); // Colonne par défaut : id
+        $order = $request->query->get('order', 'asc'); // Ordre par défaut : asc
 
-    // Récupération des stages avec tri et recherche
-    $stages = $stageRepository->findBySearchAndSort($searchTerm, $sort, $order);
+        // Récupération des stages avec tri et recherche
+        $stages = $stageRepository->findBySearchAndSort($searchTerm, $sort, $order);
 
-    return $this->render('stage/index.html.twig', [
-        'stage' => $stages,
-        'searchTerm' => $searchTerm,
-        'sort' => $sort,
-        'order' => $order,
-    ]);
+        return $this->render('stage/index.html.twig', [
+            'stage' => $stages,
+            'searchTerm' => $searchTerm,
+            'sort' => $sort,
+            'order' => $order,
+        ]);
     }
 
     #[Route('/new', name: 'app_stage_new', methods: ['GET', 'POST'])]
@@ -44,12 +43,14 @@ final class StageController extends AbstractController
             $entityManager->persist($stage);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Stage créé avec succès.');
+
             return $this->redirectToRoute('app_stage_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('stage/new.html.twig', [
             'stage' => $stage,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -70,21 +71,25 @@ final class StageController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Stage mis à jour avec succès.');
+
             return $this->redirectToRoute('app_stage_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('stage/edit.html.twig', [
             'stage' => $stage,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_stage_delete', methods: ['POST'])]
     public function delete(Request $request, Stage $stage, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$stage->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $stage->getId(), $request->request->get('_token'))) {
             $entityManager->remove($stage);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Stage supprimé avec succès.');
         }
 
         return $this->redirectToRoute('app_stage_index', [], Response::HTTP_SEE_OTHER);
