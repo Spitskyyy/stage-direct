@@ -4,12 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Stage;
 use App\Form\StageType;
+use App\Service\PdfService;
 use App\Repository\StageRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/stage')]
 final class StageController extends AbstractController
@@ -89,4 +90,22 @@ final class StageController extends AbstractController
 
         return $this->redirectToRoute('app_stage_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/stage/export', name: 'app_stage_export', methods: ['GET'])]
+public function exportStagesToPdf(StageRepository $stageRepository, PdfService $pdfService): Response
+{
+    // Récupérer tous les stages depuis la base de données
+    $stages = $stageRepository->findAll();
+
+    // Générer le contenu HTML à partir d'un template Twig
+    $html = $this->renderView('stage/export.html.twig', [
+        'stages' => $stages,
+    ]);
+
+    // Générer le PDF
+    return new Response(
+        $pdfService->generatePdf($html),
+        Response::HTTP_OK,
+        ['Content-Type' => 'application/pdf']
+    );
+}
 }

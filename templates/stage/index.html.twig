@@ -103,7 +103,7 @@
 							{{ stage.end_date }}
 						</td>
 						<td class="px-6 py-4">
-								<a href="{{ path('app_stage_show', {'id': stage.id}) }}">Détail,</a>
+							<a href="{{ path('app_stage_show', {'id': stage.id}) }}">Détail,</a>
 							<a href="{{ path('app_stage_edit', {'id': stage.id}) }}">Modifier,</a>
 							<a href="{{ path('app_stage_delete', {'id': stage.id}) }}">Del</a>
 						</td>
@@ -123,5 +123,10 @@
 
 <br>
 <a href="{{ path('app_stage_new') }}">Create new</a>
+{# templates/stage/index.html.twig #}
+<a href="{{ path('app_stage_export') }}" class="btn btn-primary">
+    Exporter en PDF
+</a>
+
 {% endblock %}
 
