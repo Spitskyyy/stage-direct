@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class TextController extends AbstractController
 {
     #[Route('/text', name: 'app_text')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
         return $this->render('text/index.html.twig', [

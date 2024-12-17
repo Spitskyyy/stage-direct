@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CompanyController extends AbstractController
 {
     #[Route(name: 'app_company_index', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     public function index(Request $request, CompanyRepository $companyRepository): Response
     {
 
